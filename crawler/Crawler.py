@@ -80,4 +80,32 @@ def get_webtoon_info(refresh_html=False):
 
     print(f'웹툰 이름 : {webtoon_name} | 작가 : {author} | 설명 : {description}')
 
+def get_episode_list():
+    # 에피소드의 제목, 별점, 등록일 찾아서 리스트로 나열하기
+    # 가져온 결과를 저장할 result
+    result = list()
+    # source에 webtoon.html을 읽고 할당
+    source = open(FILE_PATH, 'rt', encoding='utf8').read()
+    # BeautifulSoup 인스턴스 생성
+    soup = BeautifulSoup(source, 'lxml')
+    # 모든 TR를 찾아라! -> list
+    find_tr = soup.find_all('tr')[1:]
+
+    # TR리스트에서 하나씩 꺼내어 td안의 내용을 건진다
+    for tr_element in find_tr:
+        # 에피소드 title가져오기
+        episode_title = tr_element.find('td', class_='title').find('a').get_text()
+        # 에피소드 별점 가져오기
+        episode_rank = tr_element.find('div', class_='rating_type').strong.string
+        # 에피소드 날짜 가져오기
+        episode_date = tr_element.find('td', class_='num').get_text()
+        # 결과 저장
+        result.append({
+            'title' : episode_title,
+            'rank' : episode_rank,
+            'date' : episode_date,
+        })
+        print(f'제목 : {episode_title} | 별점 : {episode_rank}| 날짜 : {episode_date}')
+
 get_webtoon_info()
+get_episode_list()
