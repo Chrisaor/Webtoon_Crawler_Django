@@ -59,3 +59,8 @@ def get_webtoon_info(refresh_html=False):
     # c) 제목의 정확한 위치를 정규표현식으로 찾음. 이상하게 찾았음(추후 수정)
     PATTERN_FIND_WEBTOON_NAME = re.compile(r'<h2>\s+?\W\W(.*?)\s+?<span', re.S)
     webtoon_name = re.search(PATTERN_FIND_WEBTOON_NAME, DIV_COMIC_DETAIL).group(1)
+    # 2. 작가 찾기
+    # a) 위 DIV_COMIC_INFO를 가져와서 <span>의 'wrt_nm'클래스를 찾는다
+    SPAN_WRT_NM = DIV_COMIC_INFO.find('span', class_='wrt_nm')
+    # b) <span> 안쪽의 텍스트만 가져온다. 공백은 제거하고(strip=True)
+    author = SPAN_WRT_NM.get_text(strip=True)
