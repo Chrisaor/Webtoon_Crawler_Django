@@ -1,8 +1,12 @@
 import os
+
+import re
 import requests
 
 
 # utils가 있는 위치
+from bs4 import BeautifulSoup
+
 PATH_MODULE = os.path.abspath(__file__)
 # project container(crawler폴더)의 위치
 ROOT_DIR = os.path.dirname(PATH_MODULE)
@@ -64,3 +68,16 @@ def get_webtoon_info(refresh_html=False):
     SPAN_WRT_NM = DIV_COMIC_INFO.find('span', class_='wrt_nm')
     # b) <span> 안쪽의 텍스트만 가져온다. 공백은 제거하고(strip=True)
     author = SPAN_WRT_NM.get_text(strip=True)
+    # 3. 웹툰 설명
+    # a) 역시 DIV_COMIC_INFO를 가져와서 <p>를 가져온다
+    description = DIV_COMIC_INFO.find('p').get_text(" ")
+    # 결과들을 result 리스트에 추가
+    result.append({
+        'webtoon name': webtoon_name,
+        'author': author,
+        'description': description,
+    })
+
+    print(f'웹툰 이름 : {webtoon_name} | 작가 : {author} | 설명 : {description}')
+
+get_webtoon_info()
