@@ -37,4 +37,25 @@ def get_webtoon_info(refresh_html=False):
     except FileExistsError:
         print(f'"{FILE_PATH}" file is already exists!')
 
+        # webtoon.html을 읽고 source에 할당
+    source = open(FILE_PATH, 'rt', encoding='utf8').read()
+    # soup 변수에 BeautifulSoup클래스 호출에 source를 전달해 만들어진 인스턴스를 할당
+    # Q2: soup변수에 인스턴스를 할당? soup이라는 인스턴스를 생성?
+    soup = BeautifulSoup(source, 'lxml')
+    # BeautifulSoup을 사용해 HTML을 탐색하며 dict의 리스트를 생성,
 
+    # 가져올 정보를 담을 결과 리스트
+    result = []
+
+    # 가져올 정보
+    # 1. 웹툰이름, 2. 작가, 3. 웹툰 설명 4. 제목, 별점, 등록일 리스트
+
+    # 1. 웹툰이름 찾기!
+    # a) source를 받아 생성된 soup객체에서 <div>의 comicinfo클래스 찾음
+    DIV_COMIC_INFO = soup.find('div', class_='comicinfo')
+    # b) 위의 결과에서 <div>의 detail클래스를 찾은 결과를 prettify메소드를 사용하여 파싱
+    # prettify()메소드는 Beautiful Soup parse tree를 잘 정돈된 '스트링'으로 반환함
+    DIV_COMIC_DETAIL = DIV_COMIC_INFO.find('div', class_='detail').prettify()
+    # c) 제목의 정확한 위치를 정규표현식으로 찾음. 이상하게 찾았음(추후 수정)
+    PATTERN_FIND_WEBTOON_NAME = re.compile(r'<h2>\s+?\W\W(.*?)\s+?<span', re.S)
+    webtoon_name = re.search(PATTERN_FIND_WEBTOON_NAME, DIV_COMIC_DETAIL).group(1)
