@@ -5,7 +5,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 import django
 django.setup()
-from webtoon.models import Webtoon, Episode
+from webtoon.models import Webtoon
 
 
 # utils가 있는 위치
@@ -106,8 +106,14 @@ class WebtoonC:
         source = open(FILE_PATH, 'rt', encoding='utf8').read()
         # BeautifulSoup 인스턴스 생성
         soup = BeautifulSoup(source, 'lxml')
-        # 모든 TR를 찾아라! -> list
+        # 2번째 TR를 찾기 -> list
+        # tr_tag에 클래스가 없는 것을 찾는 걸로 추후 수정
         find_tr = soup.find_all('tr')[2:]
+        # find_tr = list()
+        # for i in soup.find_all('tr'):
+        #     tr_tag = BeautifulSoup(i, 'lxml')
+        #     if tr_tag.attrs == None:
+        #         find_tr.append(i)
         # 결과를 저장할 list
         result = list()
         #TR리스트에서 하나씩 꺼내어 td안의 내용을 건진다
@@ -128,14 +134,21 @@ class WebtoonC:
         return result
 
 if __name__ == '__main__':
-    # get_webtoon = WebtoonC(703835)
-    get_webtoon = WebtoonC(699659)
 
+    # get_webtoon에 WebtoonC(웹툰 크롤러) 인스턴스를 생성
+    get_webtoon = WebtoonC(686669)
+
+    # 웹툰 정보를 가져올 딕셔너리 생성
     webtoon_info_dict = get_webtoon.get_webtoon_info()
+
+    # 웹툰 정보가 담겨있는 딕셔너리를 인수로 넣고 Webtoon모델의 인스턴스를 생성
     wt_instance = Webtoon(webtoon_id=webtoon_info_dict['webtoon_id'], webtoon_name=webtoon_info_dict['webtoon_name'],
             author=webtoon_info_dict['author'], description=webtoon_info_dict['description'])
+    # Webtoon모델 인스턴스 저장
     wt_instance.save()
 
+    # 에피소드 리스트 생성
     episode_list = get_webtoon.get_episode_list()
+    # 에피소드 리스트의 원소인 딕셔너리를 인스턴스.episode_set.create 인수로 넣고 에피소드를 생성함.
     for i in episode_list:
         wt_instance.episode_set.create(episode_title=i['episode_title'], rating=i['rating'], created_date=i['created_date']).save()
