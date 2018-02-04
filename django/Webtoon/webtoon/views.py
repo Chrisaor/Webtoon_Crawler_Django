@@ -18,3 +18,4 @@ def detail(request, webtoon_id):
     }
     # return HttpResponse('You are looking at webtoon %s' % webtoon_id)
     return render(request, 'webtoon/detail.html', context)
+

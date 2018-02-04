@@ -9,11 +9,11 @@
 </head>
 <body>
 <h1>Hello, this is webtoon detail page</h1>
-<h1>{{ webtoon.title }}</h1>
+<h1>{{ webtoon.webtoon_name }}</h1>
     <ul>
         {% for episode in episode_list %}
         <li>
-            {{ episode.episode_title }}
+            {{ episode }}
         </li>
         {% endfor %}
     </ul>

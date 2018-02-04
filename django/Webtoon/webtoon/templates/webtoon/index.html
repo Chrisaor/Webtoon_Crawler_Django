@@ -13,14 +13,14 @@
     <ul>
         {% for webtoon in webtoon_list %}
         <li>
-            <a href="/{{ webtoon.id }}/detail">
-            {{ webtoon.title }}
+            <a href="{% url 'webtoon:detail' webtoon.id %}">
+            {{ webtoon }}
             </a>
         </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>No polls are available.</p>
+    <p>No Webtoona are available.</p>
 {% endif %}
 
 </body>

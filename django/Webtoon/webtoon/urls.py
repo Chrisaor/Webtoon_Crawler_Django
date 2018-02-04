@@ -1,9 +1,9 @@
 from django.urls import path, re_path
 from . import views
 
-app_name = 'polls'
+app_name = 'webtoon'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<int:webtoon_id>/detail/', views.detail, name='detail')
+    path('<int:webtoon_id>/', views.detail, name='detail')
 
 ]
