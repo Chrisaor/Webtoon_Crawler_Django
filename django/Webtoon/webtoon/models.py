@@ -10,8 +10,6 @@ class Webtoon(models.Model):
     def __str__(self):
         return f'{self.webtoon_name} | {self.author}({self.webtoon_id})'
 
-
-
 class Episode(models.Model):
     webtoon = models.ForeignKey(Webtoon, on_delete=models.CASCADE, blank=True, null=True)
     episode_title = models.CharField(max_length=200, default='title')

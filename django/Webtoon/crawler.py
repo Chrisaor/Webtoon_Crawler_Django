@@ -7,7 +7,7 @@ import django
 django.setup()
 from webtoon.models import Webtoon
 
-class WebtoonC:
+class WebtoonCrawler:
     def __init__(self, webtoon_id):
         self.webtoon_id = webtoon_id
         self.webtoon_name = None
@@ -100,19 +100,22 @@ class WebtoonC:
 
         return result
 
-if __name__ == '__main__':
-    # get_webtoon에 WebtoonC(웹툰 크롤러) 인스턴스를 생성
+class WebtoonInfo:
+    def __init__(self, webtoon_id):
+        self.webtoon_id = webtoon_id
 
-    get_webtoon = WebtoonC(686669)
-    # 웹툰 정보를 가져올 딕셔너리 생성
-    webtoon_info_dict = get_webtoon.get_webtoon_info()
-    # 웹툰 정보가 담겨있는 딕셔너리를 인수로 넣고 Webtoon모델의 인스턴스를 생성
-    wt_instance = Webtoon(webtoon_id=webtoon_info_dict['webtoon_id'], webtoon_name=webtoon_info_dict['webtoon_name'],
-            author=webtoon_info_dict['author'], description=webtoon_info_dict['description'])
-    # Webtoon모델 인스턴스 저장
-    wt_instance.save()
-    # 에피소드 리스트 생성
-    episode_list = get_webtoon.get_episode_list()
-    # 에피소드 리스트의 원소인 딕셔너리를 인스턴스.episode_set.create 인수로 넣고 에피소드를 생성함.
-    for i in episode_list:
-        wt_instance.episode_set.create(episode_title=i['episode_title'], rating=i['rating'], created_date=i['created_date']).save()
+    def webtoon_transfer(self):
+        # get_webtoon에 WebtoonC(웹툰 크롤러) 인스턴스를 생성
+        get_webtoon = WebtoonCrawler(self.webtoon_id)
+        # 웹툰 정보를 가져올 딕셔너리 생성
+        webtoon_info_dict = get_webtoon.get_webtoon_info()
+        # 웹툰 정보가 담겨있는 딕셔너리를 인수로 넣고 Webtoon모델의 인스턴스를 생성
+        wt_instance = Webtoon(webtoon_id=webtoon_info_dict['webtoon_id'], webtoon_name=webtoon_info_dict['webtoon_name'],
+                author=webtoon_info_dict['author'], description=webtoon_info_dict['description'])
+        # Webtoon모델 인스턴스 저장
+        wt_instance.save()
+        # 에피소드 리스트 생성
+        episode_list = get_webtoon.get_episode_list()
+        # 에피소드 리스트의 원소인 딕셔너리를 인스턴스.episode_set.create 인수로 넣고 에피소드를 생성함.
+        for i in episode_list:
+            wt_instance.episode_set.create(episode_title=i['episode_title'], rating=i['rating'], created_date=i['created_date']).save()
