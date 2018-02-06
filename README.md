@@ -13,3 +13,5 @@ w.get_episode_list()
 w.save()
 ```
 
+<img width="910" alt="2018-02-07 12 53 36" src="https://user-images.githubusercontent.com/33015649/35869003-75e43ade-0ba1-11e8-802b-46c5af784477.png">
+<img width="755" alt="2018-02-07 12 53 50" src="https://user-images.githubusercontent.com/33015649/35869008-77712ba0-0ba1-11e8-9515-9a728e121377.png">
