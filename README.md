@@ -1,5 +1,6 @@
 # Webtoon_Crawler_Django
 
+```
 from webtoon.models import *
 
 # webtoon_id가 702608인 웹툰의 인스턴스를 생성합니다.
@@ -10,5 +11,5 @@ w.get_webtoon()
 w.get_episode_list()
 # 불러온 정보를 저장합니다
 w.save()
-
+```
 
