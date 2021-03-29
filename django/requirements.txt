@@ -17,7 +17,7 @@ post==0.0.26
 prompt-toolkit==1.0.15
 ptyprocess==0.5.2
 public==0.0.65
-Pygments==2.2.0
+Pygments==2.7.4
 pytz==2017.3
 query-string==0.0.28
 request==0.0.26
